@@ -6,7 +6,14 @@ const des = path.resolve(__dirname, 'files-copy');
 
 async function copyDir() {
   try {
-    await fs.mkdir(des, { recursive: true });
+    try {
+      await fs.access(des);
+      await fs.rm(des, { recursive: true });
+    } catch (err) {
+      console.log(err);
+    }
+
+    await fs.mkdir(des);
     const files = await fs.readdir(src, {
       withFileTypes: true,
     });
