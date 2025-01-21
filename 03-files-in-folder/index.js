@@ -12,17 +12,18 @@ const readDirectory = (dirPath) => {
 
     files.forEach((file) => {
       const filePath = path.join(dirPath, file.name);
-
-      fs.stat(filePath, (err, stats) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        const fileName = file.name.replace(path.extname(file.name), '');
-        const extName = path.extname(file.name).slice(1);
-        const fileSize = (stats.size / 1024).toFixed(3);
-        console.log(`${fileName} - ${extName} - ${fileSize}kb`);
-      });
+      if (file.isFile()) {
+        fs.stat(filePath, (err, stats) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          const fileName = file.name.replace(path.extname(file.name), '');
+          const extName = path.extname(file.name).slice(1);
+          const fileSize = (stats.size / 1024).toFixed(3);
+          console.log(`${fileName} - ${extName} - ${fileSize}kb`);
+        });
+      }
     });
   });
 };
