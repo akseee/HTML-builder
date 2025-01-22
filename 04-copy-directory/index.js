@@ -11,19 +11,16 @@ async function copyDir() {
       await fs.rm(des, { recursive: true });
     } catch (err) {
       if (err.code !== 'ENOENT') {
-        console.error('Unexpected error:', err);
+        console.error(err);
       }
     }
-
     await fs.mkdir(des);
     const files = await fs.readdir(src, {
       withFileTypes: true,
     });
-
     for (let file of files) {
       const srcFile = path.join(src, file.name);
       const desFile = path.join(des, file.name);
-
       await fs.copyFile(srcFile, desFile);
     }
   } catch (err) {
