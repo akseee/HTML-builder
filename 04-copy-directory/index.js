@@ -10,7 +10,9 @@ async function copyDir() {
       await fs.access(des);
       await fs.rm(des, { recursive: true });
     } catch (err) {
-      console.log(err);
+      if (err.code !== 'ENOENT') {
+        console.error('Unexpected error:', err);
+      }
     }
 
     await fs.mkdir(des);
